@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import {useSprings, config, interpolate} from 'react-spring'
 import {useDrag} from 'react-use-gesture'
 
+/* Style Slider */
 const Slider = styled(animated.div)`
   position: relative;
   & > div {
@@ -12,30 +13,24 @@ const Slider = styled(animated.div)`
   }
 `
 
-// These two are just helpers, they curate spring data, values that are later being interpolated into css
-const to = i => ({x: 0, y: i, scale: 1})
-const from = i => ({x: 0, rot: 0, scale: 1.5, y: -1000})
-
-const SwipeSlider = ({children}) => {
-  //   const [{x, scale}, api] = useSprings( children.length , index => ({ opacity }) )
+/** 
+* SwipeSlider
+* @summary Slider with animation Swiper LEFT and RIGHT
+* @param {Element[]} children - Elements that show inside slider
+* @param {function} callbackLeft - Callback execute when swipe left
+* @param {function} callbackRight - Callback execute when swipe Right
+*/
+const SwipeSlider = ({children, callbackLeft, callbackRight}) => {
   const [swipped] = useState(() => new Set())
   const [springs, api] = useSprings(children.length, i => ({
-    ...to(i),
-    from: from(i),
+    x: 0,
+    y: i,
+    scale: 1,
   }))
 
   const bind = useDrag(
-    ({
-      args: [index],
-      movement: [auxX],
-      delta: [DeltX],
-      swipe,
-      direction: [xDir],
-      velocity,
-      down,
-    }) => {
-      const speedSwipe = velocity / 10 > 0.2
-      console.log({velocity})
+    ({args: [index], movement: [auxX], direction: [xDir], velocity, down}) => {
+      const speedSwipe = velocity > 0.2
       const direction = xDir < 0 ? -1 : 1
       if (!down && speedSwipe) swipped.add(index)
 
@@ -43,12 +38,17 @@ const SwipeSlider = ({children}) => {
         if (index !== i) return
         const isSwipped = swipped.has(index)
         const scale = down ? 1.1 : 1
+        if (direction < 0 && isSwipped) {
+          callbackLeft()
+        } else if (direction > 0 && isSwipped) {
+          callbackRight()
+        }
+
         const x = isSwipped
           ? (200 + window.innerWidth) * direction
           : down
           ? auxX
           : 0
-        console.log({DeltX, auxX})
         return {scale, x, config: config.default}
       })
     },

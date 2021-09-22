@@ -6,6 +6,10 @@ import styled from 'styled-components'
 const Nav = styled.nav`
   background: #fff;
   box-shadow: 0 0.3rem 0.6rem 0 rgba(0, 0, 0, 0.2);
+  width: 100%;
+  position: sticky;
+  display: flex;
+  justify-content: space-evenly;
   & svg {
     margin: 1rem 2rem;
   }

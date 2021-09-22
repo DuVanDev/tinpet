@@ -1,25 +1,26 @@
-import {animated} from '@react-spring/web'
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import {useSprings, config, interpolate} from 'react-spring'
+import {useSprings, config, animated} from 'react-spring'
 import {useDrag} from 'react-use-gesture'
 
 /* Style Slider */
 const Slider = styled(animated.div)`
   position: relative;
+  height: 75%;
+  margin: 2rem;
   & > div {
     position: absolute;
-    padding: 2rem;
+    height: 80vh;
   }
 `
 
-/** 
-* SwipeSlider
-* @summary Slider with animation Swiper LEFT and RIGHT
-* @param {Element[]} children - Elements that show inside slider
-* @param {function} callbackLeft - Callback execute when swipe left
-* @param {function} callbackRight - Callback execute when swipe Right
-*/
+/**
+ * SwipeSlider
+ * @summary Slider with animation Swiper LEFT and RIGHT
+ * @param {Element[]} children - Elements that show inside slider
+ * @param {function} callbackLeft - Callback execute when swipe left
+ * @param {function} callbackRight - Callback execute when swipe Right
+ */
 const SwipeSlider = ({children, callbackLeft, callbackRight}) => {
   const [swipped] = useState(() => new Set())
   const [springs, api] = useSprings(children.length, i => ({
@@ -39,9 +40,9 @@ const SwipeSlider = ({children, callbackLeft, callbackRight}) => {
         const isSwipped = swipped.has(index)
         const scale = down ? 1.1 : 1
         if (direction < 0 && isSwipped) {
-          callbackLeft()
+          callbackLeft(index)
         } else if (direction > 0 && isSwipped) {
-          callbackRight()
+          callbackRight(index)
         }
 
         const x = isSwipped
@@ -49,7 +50,7 @@ const SwipeSlider = ({children, callbackLeft, callbackRight}) => {
           : down
           ? auxX
           : 0
-        return {scale, x, config: config.default}
+        return {scale, x, config: config.slow}
       })
     },
   )
@@ -58,9 +59,11 @@ const SwipeSlider = ({children, callbackLeft, callbackRight}) => {
     <Slider>
       {springs.map(({x, scale}, index) => (
         <animated.div
+          key={index}
           {...bind(index)}
           style={{
             transform: x.to(x => `translate3d(${x}px,0px,0)`),
+            width: '100%',
           }}
         >
           {children[index]}

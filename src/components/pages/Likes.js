@@ -1,12 +1,12 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import {Main} from '../../Styles/globalStyles'
 import PetCard from '../molecules/PetCard/PetCard'
 import {Card} from '../molecules/PetCard/PetCardStyles'
 import FilterButtons from '../molecules/FilterButtons/FilterButtons'
-import {LikedPhotosContext} from '../../context/LikedPhotosContext'
 import {useTrail, animated} from 'react-spring'
-import sadDog from '../../assets/sad-dog.gif'
+import useFilterClassifiedPhotos from '../../hooks/useFilterClassifiedPhotos'
+import {Feedback} from '../atoms/Feedback'
 
 const Grid = styled.div`
   margin: 2rem 2rem 9rem 2rem;
@@ -19,45 +19,40 @@ const Grid = styled.div`
     height: 100%;
   }
 `
-const Article = styled.article`
-  margin: 2rem;
-  text-align: center;
-  & img {
-    width: 3rem;
-    margin-bottom: 2rem;
-  }
-`
 
 const Likes = () => {
-  const {classifiedPhotos} = useContext(LikedPhotosContext)
+  const {classifiedPhotos, feedback, filterId, setFilterId} =
+    useFilterClassifiedPhotos({
+      initialValue: '1',
+    })
+
 
   const trail = useTrail(classifiedPhotos.length, {
     opacity: 1,
     from: {opacity: 0},
   })
 
-  if (classifiedPhotos.length == 0) {
-    return (
-      <Article>
-        <img src={sadDog} />
-        <p>You don't have any liked or disliked photo.</p>
-      </Article>
-    )
+  if (classifiedPhotos.length == 0 && filterId == 1) {
+    return <Feedback message={feedback} />
   }
 
   return (
     <Main>
-      <Grid>
-        {trail.map((props, index) => {
-          const {isLiked, photo} = classifiedPhotos[index]
-          return (
-            <animated.div key={index} style={props}>
-              <PetCard isLiked={isLiked} src={photo} />
-            </animated.div>
-          )
-        })}
-      </Grid>
-      <FilterButtons />
+      {classifiedPhotos.length ? (
+        <Grid>
+          {trail.map((props, index) => {
+            const {isLiked, photo} = classifiedPhotos[index]
+            return (
+              <animated.div key={index} style={props}>
+                <PetCard isLiked={isLiked} src={photo} />
+              </animated.div>
+            )
+          })}
+        </Grid>
+      ) : (
+        <Feedback message={feedback} />
+      )}
+      <FilterButtons value={filterId} onClick={value => setFilterId(value)} />
     </Main>
   )
 }

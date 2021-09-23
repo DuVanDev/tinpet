@@ -1,4 +1,5 @@
-import React, { useMemo} from 'react'
+import React, {useMemo} from 'react'
+import {useCallback} from 'react'
 import {createContext} from 'react'
 import {useLocalStorage} from '../hooks/useLocalStorage'
 
@@ -10,12 +11,19 @@ const LikedPhotosContextProvider = ({children}) => {
     initialValue: [],
   })
 
+  const addNewClassifiedPhoto = useCallback(
+     newValue => {
+      setClassifiedPhotos(prev => [...prev, newValue])
+    },
+    [setClassifiedPhotos],
+  )
+
   const value = useMemo(
     () => ({
       classifiedPhotos,
-      setClassifiedPhotos,
+      setClassifiedPhotos: addNewClassifiedPhoto,
     }),
-    [classifiedPhotos, setClassifiedPhotos],
+    [classifiedPhotos, addNewClassifiedPhoto],
   )
 
   return (

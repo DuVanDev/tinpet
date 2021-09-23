@@ -1,19 +1,21 @@
 import React, {useContext} from 'react'
 import {LikedPhotosContext} from '../../context/LikedPhotosContext'
 import {Main} from '../../Styles/globalStyles'
+import Loading from '../atoms/Loading'
 import PetCard from '../molecules/PetCard/PetCard'
 import SwipeSlider from '../organims/SwipeSlider/SwipeSlider'
 
-const Home = ({pets = []}) => {
-  const {classifiedPhotos, setClassifiedPhotos} = useContext(LikedPhotosContext)
+const Home = ({pets = [], updateIndex}) => {
+  const {setClassifiedPhotos} = useContext(LikedPhotosContext)
 
   const handlerCalification = (index, isLiked) => {
-    setClassifiedPhotos([
-      ...classifiedPhotos,
-      {photo: pets[index], isLiked: isLiked},
-    ])
+    updateIndex(index)
+    setClassifiedPhotos({photo: pets[index], isLiked: isLiked})
   }
-
+  console.log({pets})
+  if (pets.length == 0) {
+    return <Loading />
+  }
 
   return (
     <Main>

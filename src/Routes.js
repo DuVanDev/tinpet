@@ -1,7 +1,6 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import Home from './components/pages/Home'
 import Likes from './components/pages/Likes'
-import Profile from './components/pages/Profile'
 import RandomList from './containers/RandomList'
 
 import {Redirect, Route, Switch, useLocation} from 'react-router'

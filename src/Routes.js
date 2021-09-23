@@ -10,28 +10,27 @@ import {useTransition, animated} from 'react-spring'
 const Routes = () => {
   const location = useLocation()
 
-  console.log({location})
   const transitions = useTransition(location, {
     from: {
       position: 'absolute',
+      marginTop : '4rem',
       width: '100%',
       opacity: 0,
-      transform: 'translate(100% , 0)',
     },
-    enter: {opacity: 1, transform: 'translate(0% , 0)'},
-    leave: {opacity: 0, transform: 'translate(-50% , 0)'},
+    enter: {opacity: 1},
+    leave: {
+      opacity: 0,
+    },
   })
-
-  useEffect(() => {
-    console.log('Montado')
-  }, [])
 
   return transitions((props, item) => (
     <animated.div style={props}>
       <Switch location={item}>
         <Route exact path="/">
           <RandomList>
-            {({randomList}) => <Home pets={randomList} />}
+            {({randomList, setIndex}) => (
+              <Home updateIndex={setIndex} pets={randomList} />
+            )}
           </RandomList>
         </Route>
         <Route exact path="/likes">

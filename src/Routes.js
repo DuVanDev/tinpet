@@ -4,7 +4,7 @@ import Likes from './components/pages/Likes'
 import Profile from './components/pages/Profile'
 import RandomList from './containers/RandomList'
 
-import {Route, Switch, useLocation} from 'react-router'
+import {Redirect, Route, Switch, useLocation} from 'react-router'
 import {useTransition, animated} from 'react-spring'
 
 const Routes = () => {
@@ -36,9 +36,7 @@ const Routes = () => {
         <Route exact path="/likes">
           <Likes />
         </Route>
-        <Route exact path="/profile">
-          <Profile />
-        </Route>
+        <Redirect to='/' />
       </Switch>
     </animated.div>
   ))

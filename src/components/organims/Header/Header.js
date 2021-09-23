@@ -7,7 +7,9 @@ const Nav = styled.nav`
   background: #fff;
   box-shadow: 0 0.3rem 0.6rem 0 rgba(0, 0, 0, 0.2);
   width: 100%;
-  position: sticky;
+  position: fixed;
+  top:0;
+  z-index: 9;
   display: flex;
   justify-content: space-evenly;
   & svg {

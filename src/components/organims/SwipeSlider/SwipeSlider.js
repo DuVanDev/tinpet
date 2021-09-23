@@ -39,31 +39,39 @@ const SwipeSlider = ({children, callbackLeft, callbackRight}) => {
         if (index !== i) return
         const isSwipped = swipped.has(index)
         const scale = down ? 1.1 : 1
-        if (direction < 0 && isSwipped) {
-          callbackLeft(index)
-        } else if (direction > 0 && isSwipped) {
-          callbackRight(index)
-        }
 
         const x = isSwipped
           ? (200 + window.innerWidth) * direction
           : down
           ? auxX
           : 0
-        return {scale, x, config: config.slow}
+        return {
+          scale,
+          x,
+          config: config.slow,
+          onRest: () => {
+            console.log(direction, isSwipped)
+            if (direction < 0 && isSwipped) {
+              callbackLeft(i)
+            } else if (direction > 0 && isSwipped) {
+              callbackRight(index)
+            }
+          },
+        }
       })
     },
   )
 
   return (
     <Slider>
-      {springs.map(({x, scale}, index) => (
+      {springs.map(({x}, index) => (
         <animated.div
           key={index}
           {...bind(index)}
           style={{
             transform: x.to(x => `translate3d(${x}px,0px,0)`),
             width: '100%',
+            zIndex: springs.length - index,
           }}
         >
           {children[index]}

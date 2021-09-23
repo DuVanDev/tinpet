@@ -36,8 +36,6 @@ const Likes = () => {
     from: {opacity: 0},
   })
 
-  console.log({classifiedPhotos})
-
   if (classifiedPhotos.length == 0) {
     return (
       <Article>

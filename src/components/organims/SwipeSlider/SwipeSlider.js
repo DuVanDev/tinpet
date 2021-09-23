@@ -50,7 +50,6 @@ const SwipeSlider = ({children, callbackLeft, callbackRight}) => {
           x,
           config: config.slow,
           onRest: () => {
-            console.log(direction, isSwipped)
             if (direction < 0 && isSwipped) {
               callbackLeft(i)
             } else if (direction > 0 && isSwipped) {

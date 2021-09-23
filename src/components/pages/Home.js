@@ -12,7 +12,6 @@ const Home = ({pets = [], updateIndex}) => {
     updateIndex(index)
     setClassifiedPhotos({photo: pets[index], isLiked: isLiked})
   }
-  console.log({pets})
   if (pets.length == 0) {
     return <Loading />
   }

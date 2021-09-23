@@ -29,9 +29,8 @@ ul,
   }
   body {
     background: #fefefe;
-	overflow-x: hidden;
     overscroll-behavior: none;
-    width: 100%;
+    width: 100vw;
 margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -45,8 +44,15 @@ code {
     monospace;
 }
 
+#root {
+	overflow-x: hidden;
+  position: relative;
+  height: 100vh;
+} 
+
   .App {
     margin: 0 auto;
+  height: fit-content;
   }
 	
 `

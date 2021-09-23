@@ -6,6 +6,7 @@ import {Card} from '../molecules/PetCard/PetCardStyles'
 import FilterButtons from '../molecules/FilterButtons/FilterButtons'
 import {LikedPhotosContext} from '../../context/LikedPhotosContext'
 import {useTrail, animated} from 'react-spring'
+import sadDog from '../../assets/sad-dog.gif'
 
 const Grid = styled.div`
   margin: 2rem 2rem 9rem 2rem;
@@ -15,7 +16,15 @@ const Grid = styled.div`
   column-gap: 1.5rem;
   row-gap: 1.5rem;
   ${Card} {
-    height: 100%;;
+    height: 100%;
+  }
+`
+const Article = styled.article`
+  margin: 2rem;
+  text-align: center;
+  & img {
+    width: 3rem;
+    margin-bottom: 2rem;
   }
 `
 
@@ -26,6 +35,17 @@ const Likes = () => {
     opacity: 1,
     from: {opacity: 0},
   })
+
+  console.log({classifiedPhotos})
+
+  if (classifiedPhotos.length == 0) {
+    return (
+      <Article>
+        <img src={sadDog} />
+        <p>You don't have any liked or disliked photo.</p>
+      </Article>
+    )
+  }
 
   return (
     <Main>
